@@ -21,5 +21,16 @@ fn main() {
         orig01,
         answer::num_01(orig01)
 
-    )
+    );
+
+    //Question 02
+    let first_string = "パトカー";
+    let second_string = "タクシー";
+    println!("---- 02 Mix two string");
+    println!(
+        "mix_two_str(\"{}\", \"{}\") -> {}",
+        first_string,
+        second_string,
+        answer::mix_string(first_string, second_string)
+    );
 }

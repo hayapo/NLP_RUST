@@ -19,11 +19,34 @@ pub fn num_01(input_string: &str) -> String {
     String::from_iter(iter)
 }
 
+//02
+pub fn mix_string(first_string: &str, second_string: &str) -> String {
+    let mut mixed_string = String::from_iter(
+        first_string
+            .chars()
+            .zip(second_string.chars())
+            .map(|(x, y)| format!("{}{}", x, y)),
+    );
+
+    if first_string.chars().count() > second_string.chars().count() {
+        first_string
+            .chars()
+            .skip(second_string.chars().count())
+            .for_each(|x| mixed_string.push(x));
+    } else if second_string.chars().count() > first_string.chars().count() {
+        second_string
+            .chars()
+            .skip(first_string.chars().count())
+            .for_each(|x| mixed_string.push(x));
+    }
+    return mixed_string;
+}
+
 
 #[cfg(test)]
 mod tests {
     use crate::chapter01::answer::{
-        num_00, num_01
+        num_00, num_01, mix_string
     };
 
     #[test]
@@ -38,5 +61,16 @@ mod tests {
         let input_string = "パタトクカシーー";
         let expected = "パトカー";
         assert_eq!(expected, num_01(input_string));
+    }
+
+    #[test]
+
+    fn test_02() {
+        let first_string = "パトカー";
+        let second_string = "タクシー";
+        let expected = "パタトクカシーー";
+
+        assert_eq!(expected, mix_string(first_string, second_string));
+
     }
 }
