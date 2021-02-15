@@ -42,11 +42,22 @@ pub fn mix_string(first_string: &str, second_string: &str) -> String {
     return mixed_string;
 }
 
+pub fn pi(original: &str) -> Vec<usize> {
+    original
+        .split_whitespace()
+        .map(|word| {
+            word.chars()
+                .filter(|x| x.is_alphabetic())
+                .collect::<Vec<char>>()
+                .len()
+        }) 
+        .collect::<Vec<usize>>()
+}
 
 #[cfg(test)]
 mod tests {
     use crate::chapter01::answer::{
-        num_00, num_01, mix_string
+        num_00, num_01, mix_string, pi
     };
 
     #[test]
@@ -73,4 +84,12 @@ mod tests {
         assert_eq!(expected, mix_string(first_string, second_string));
 
     }
+
+    #[test]
+    fn test_03(){
+        let original = "Now I need a drink, alcoholic of course, after the heavy lectures involving quantum mechanics.";
+        let expected: Vec<usize> = vec!{3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9};
+        assert_eq!(expected, pi(original))
+    }
+
 }
