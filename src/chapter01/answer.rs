@@ -73,10 +73,30 @@ pub fn chemical_symbols(sentence: &str, index_symbols: Vec<usize>) -> BTreeMap<S
     return symbols;
 }
 
+//Question5
+pub fn word_ngram(text: &str, n:usize) -> Vec<Vec<String>> {
+    return text
+            .split_whitespace()
+            .map(|x| x.to_string())
+            .collect::<Vec<String>>()
+            .windows(n)
+            .map(|x| Vec::from(x.to_vec()))
+            .collect::<Vec<Vec<String>>>();
+}
+
+pub fn char_ngram(text: &str, n: usize) -> Vec<String> {
+    return text
+            .chars()
+            .collect::<Vec<char>>()
+            .windows(n)
+            .map(|x| String::from_iter(x.to_vec()))
+            .collect::<Vec<String>>();
+}
+
 #[cfg(test)]
 mod tests {
     use crate::chapter01::answer::{
-        num_00, num_01, mix_string, pi, chemical_symbols
+        num_00, num_01, mix_string, pi, chemical_symbols, word_ngram, char_ngram
     };
 
     use std::collections::BTreeMap;
@@ -127,5 +147,22 @@ mod tests {
         }
         let actual = chemical_symbols(original, index_symbols);
         assert_eq!(expected, actual)
+    }
+
+    #[test]
+    fn test_05() {
+        let original = "I am an NLPer";
+        let n = 2;
+        let expected_word_tokens: Vec<Vec<&str>> = 
+            vec![vec!["I", "am"], vec!["am", "an"], vec!["an", "NLPer"]];
+        let actual_word_tokens = word_ngram(original, n);
+        assert_eq!(expected_word_tokens, actual_word_tokens);
+
+        //char n-gram
+        let expected_char_tokens: Vec<&str> = vec![
+            "I ", " a", "am", "m ", " a", "an", "n ", " N", "NL", "LP", "Pe", "er",
+        ];
+        let actual_char_tokens = char_ngram(original, n);
+        assert_eq!(expected_char_tokens, actual_char_tokens)
     }
 }
