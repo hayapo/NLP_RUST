@@ -1,8 +1,15 @@
+extern crate log;
+extern crate env_logger;
 extern crate nlp_rust;
+extern crate serde_json;
+extern crate rand;
 
 use nlp_rust::chapter01::answer;
+use std::collections::BTreeMap;
 
 fn main() {
+    env_logger::init();
+    log::info!("start!!");
     // Chapter 01
     println!("-- Chapter01");
     //Question 00
@@ -33,4 +40,28 @@ fn main() {
         second_string,
         answer::mix_string(first_string, second_string)
     );
+
+    //Question 03
+    let orig03 = "Now I need a drink, alcoholic of course, after the heavy lectures involving quantum mechanics.";
+    println!("---- 03 Pi");
+    println!(
+        "pi(\"{}\") -> {}",
+        orig03,
+        format!("{:?}", &answer::pi(orig03))
+    );
+
+    //Question 04
+    let original = "Hi He Lied Because Boron Could Not Oxidize Fluorine. New Nations Might Also Sign Peace Security Clause. Arthur King Can.";
+    let idx_symbols: Vec<usize> = vec![1, 5, 6, 7, 8, 9, 15, 16, 19];
+    println!("---- 04 Chemical Element");
+    println!(
+        "symbol_of_element(\"{}\", {}) -> ",
+        original,
+        format!("{:?}", &idx_symbols)
+    );
+    print_map_to_json(answer::chemical_symbols(original, idx_symbols));
+}
+
+fn print_map_to_json(map: BTreeMap<String, usize>) {
+    println!("{}", serde_json::to_string_pretty(&map).unwrap());
 }

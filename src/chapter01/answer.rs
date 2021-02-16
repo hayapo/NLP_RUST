@@ -1,4 +1,5 @@
 use std::iter::FromIterator;
+use std::collections::BTreeMap;
 //第1章:準備運動
 
 //00
@@ -42,6 +43,7 @@ pub fn mix_string(first_string: &str, second_string: &str) -> String {
     return mixed_string;
 }
 
+//Question 03
 pub fn pi(original: &str) -> Vec<usize> {
     original
         .split_whitespace()
@@ -54,11 +56,30 @@ pub fn pi(original: &str) -> Vec<usize> {
         .collect::<Vec<usize>>()
 }
 
+//Question 04
+pub fn chemical_symbols(sentence: &str, index_symbols: Vec<usize>) -> BTreeMap<String, usize> {
+    let mut symbols: BTreeMap<String, usize> = BTreeMap::new();
+    sentence
+        .split_whitespace()
+        .enumerate()
+        .for_each(|(idx, word)| {
+            let idx = idx + 1;
+            if index_symbols.contains(&idx) {
+                symbols.insert(String::from_iter(word.chars().take(1)), idx);
+            } else {
+                symbols.insert(String::from_iter(word.chars().take(2)), idx);
+            }
+        });
+    return symbols;
+}
+
 #[cfg(test)]
 mod tests {
     use crate::chapter01::answer::{
-        num_00, num_01, mix_string, pi
+        num_00, num_01, mix_string, pi, chemical_symbols
     };
+
+    use std::collections::BTreeMap;
 
     #[test]
     fn test_00() {
@@ -75,7 +96,6 @@ mod tests {
     }
 
     #[test]
-
     fn test_02() {
         let first_string = "パトカー";
         let second_string = "タクシー";
@@ -92,4 +112,20 @@ mod tests {
         assert_eq!(expected, pi(original))
     }
 
+    #[test]
+    fn test_04(){
+        let original = "Hi He Lied Because Boron Could Not Oxidize Fluorine. New Nations Might Also Sign Peace Security Clause. Arthur King Can.";
+        let index_symbols: Vec<usize> = vec!{1, 5, 6, 7, 8, 9, 15, 16, 19};
+        let expected_vec = vec![
+            "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mi", "Al", "Si", "P", "S",
+            "Cl", "Ar", "K", "Ca",
+        ];
+        let mut expected = BTreeMap::new();
+        for (i, symbol) in expected_vec.iter().enumerate() {
+            let idx = i + 1;
+            expected.insert(symbol.to_string(), idx);
+        }
+        let actual = chemical_symbols(original, index_symbols);
+        assert_eq!(expected, actual)
+    }
 }
