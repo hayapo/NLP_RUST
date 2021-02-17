@@ -1,5 +1,6 @@
 use std::iter::FromIterator;
 use std::collections::BTreeMap;
+use std::collections::BTreeSet;
 //第1章:準備運動
 
 //00
@@ -93,10 +94,46 @@ pub fn char_ngram(text: &str, n: usize) -> Vec<String> {
             .collect::<Vec<String>>();
 }
 
+//Question6
+pub fn char_ngram_set(text: &str, n: usize) -> BTreeSet<String> {
+    let mut ngram_set = BTreeSet::new();
+    char_ngram(text, n).iter().for_each(|x| {
+        ngram_set.insert(x.to_string());
+    });
+    return ngram_set;
+}
+
+pub fn union_ngram_set(source_set: BTreeSet<String>, target_set: &BTreeSet<String>) -> BTreeSet<String> {
+    return source_set
+        .union(target_set)
+        .cloned()
+        .collect::<BTreeSet<String>>();
+}
+
+pub fn intersection_ngram_set(
+    source_set: BTreeSet<String>,
+    target_set: &BTreeSet<String>,
+) -> BTreeSet<String> {
+    return source_set
+        .intersection(target_set)
+        .cloned()
+        .collect::<BTreeSet<String>>();
+}
+
+pub fn difference_ngram_set(
+    source_set: BTreeSet<String>,
+    target_set: &BTreeSet<String>,
+) -> BTreeSet<String> {
+    return source_set
+        .difference(target_set)
+        .cloned()
+        .collect::<BTreeSet<String>>();
+}
+
 #[cfg(test)]
 mod tests {
     use crate::chapter01::answer::{
-        num_00, num_01, mix_string, pi, chemical_symbols, word_ngram, char_ngram
+        num_00, num_01, mix_string, pi, chemical_symbols, word_ngram, char_ngram, char_ngram_set, union_ngram_set, intersection_ngram_set, difference_ngram_set
     };
 
     use std::collections::BTreeMap;
@@ -164,5 +201,67 @@ mod tests {
         ];
         let actual_char_tokens = char_ngram(original, n);
         assert_eq!(expected_char_tokens, actual_char_tokens)
+    }
+
+    #[test]
+    fn test_06() {
+        let original1 = "paraparaparadise";
+        let original2 = "paragraph";
+        
+        let expected1_value = vec!["ad", "ap", "ar", "di", "is", "pa", "ra", "se"];
+        let expected2_value = vec!["ag", "ap", "ar", "gr", "pa", "ph", "ra"];
+
+        assert_eq!(
+            expected1_value,
+            char_ngram_set(original1, 2)
+                .into_iter()
+                .collect::<Vec<String>>()
+        );
+        assert_eq!(
+            expected2_value,
+            char_ngram_set(original2, 2)
+                .into_iter()
+                .collect::<Vec<String>>()
+        );
+
+        let expected_union = vec![
+            "ad", "ag", "ap", "ar", "di", "gr", "is", "pa", "ph", "ra", "se",
+        ];
+        assert_eq!(
+            expected_union,
+            union_ngram_set(char_ngram_set(original1, 2), &char_ngram_set(original2, 2))
+                .into_iter()
+                .collect::<Vec<String>>()
+        );
+
+        let expected_intersection = vec!["ap", "ar", "pa", "ra"];
+        assert_eq!(
+            expected_intersection,
+            intersection_ngram_set(char_ngram_set(original1, 2), &char_ngram_set(original2, 2))
+                .into_iter()
+                .collect::<Vec<String>>()
+        );
+
+        // origina1 - original2
+        let expected_difference_1_minus_2 = vec!["ad", "di", "is", "se"];
+        assert_eq!(
+            expected_difference_1_minus_2,
+            difference_ngram_set(char_ngram_set(original1, 2), &char_ngram_set(original2, 2))
+                .into_iter()
+                .collect::<Vec<String>>()
+        );
+
+        // original2 - origina1
+        let expected_difference_2_minus_1 = vec!["ag", "gr", "ph"];
+        assert_eq!(
+            expected_difference_2_minus_1,
+            difference_ngram_set(char_ngram_set(original2, 2), &char_ngram_set(original1, 2))
+                .into_iter()
+                .collect::<Vec<String>>()
+        );
+
+        // find "se" from each set
+        assert_eq!(true, char_ngram_set(original1, 2).contains("se"));
+        assert_eq!(false, char_ngram_set(original2, 2).contains("se"));
     }
 }

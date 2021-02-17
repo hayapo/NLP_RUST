@@ -60,8 +60,23 @@ fn main() {
         format!("{:?}", &idx_symbols)
     );
     print_map_to_json(answer::chemical_symbols(original, idx_symbols));
+
+    //Question 05
+    let original = "I am an NLPer";
+    println!("---- 05 N-gram (word, char)");
+    println!(
+        "word_ngram(\"{}\", 2) -> {}",
+        original,
+        format!("{:?}", &answer::word_ngram(original, 2))
+    );
+    println!(
+        "char_ngram(\"{}\", 2) -> {}",
+        original,
+        format!("{:?}", &answer::char_ngram(original, 2))
+    );
 }
 
 fn print_map_to_json(map: BTreeMap<String, usize>) {
     println!("{}", serde_json::to_string_pretty(&map).unwrap());
 }
+
