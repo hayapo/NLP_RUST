@@ -74,6 +74,66 @@ fn main() {
         original,
         format!("{:?}", &answer::char_ngram(original, 2))
     );
+
+    //Question 06
+    let orig06_1 = "paraparaparadise";
+    let orig06_2 = "paragraph";
+    println!("---- 06 Set (Union, Intersection, Difference, Include check)");
+    println!(
+        "union -> {}",
+        format!(
+            "{:?}",
+            &answer::union_ngram_set(
+                answer::char_ngram_set(orig06_1, 2),
+                &answer::char_ngram_set(orig06_2, 2)
+            )
+        )
+    );
+    println!(
+        "intersection -> {}",
+        format!(
+            "{:?}",
+            &answer::intersection_ngram_set(
+                answer::char_ngram_set(orig06_1, 2),
+                &answer::char_ngram_set(orig06_2, 2)
+            )
+        )
+    );
+    println!(
+        "difference X - Y -> {}",
+        format!(
+            "{:?}",
+            &answer::difference_ngram_set(
+                answer::char_ngram_set(orig06_1, 2),
+                &answer::char_ngram_set(orig06_2, 2)
+            )
+        )
+    );
+    println!(
+        "difference Y - X -> {}",
+        format!(
+            "{:?}",
+            &answer::difference_ngram_set(
+                answer::char_ngram_set(orig06_2, 2),
+                &answer::char_ngram_set(orig06_1, 2)
+            )
+        )
+    );
+
+    println!(
+        "\"{}\" contains \"se\"? -> {}",
+        orig06_1,
+        answer::char_ngram_set(orig06_1, 2).contains("se")
+    );
+    println!(
+        "\"{}\" contains \"se\"? -> {}",
+        orig06_2,
+        answer::char_ngram_set(orig06_2, 2).contains("se")
+    );
+
+     // Chapter 02
+     //println!("-- Chapter01");
+     //println!("---- 01 Mix two string")
 }
 
 fn print_map_to_json(map: BTreeMap<String, usize>) {
