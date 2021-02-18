@@ -145,11 +145,16 @@ fn main() {
     //Question08
     let orig08 = "AaBbCc";
     let _orig08_ciphered = "AzByCx";
-    println!("---- Cipher");
+    println!("---- 08 Cipher");
     println!(">>>>>暗号化");
     println!("原文={},暗号文={}", orig08, answer::cipher(orig08));
     println!(">>>>>復号化");
     println!("原文={},暗号文={}", _orig08_ciphered, answer::cipher(_orig08_ciphered));
+
+    //Question08
+    let original_sentence = "I couldn’t believe that I could actually understand what I was reading : the phenomenal power of the human mind.";
+    println!("---- 09 Typoglycemia");
+    println!("{}", answer::typoglycemia(original_sentence))
 }
 
 fn print_map_to_json(map: BTreeMap<String, usize>) {
