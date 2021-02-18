@@ -1,3 +1,5 @@
+use rand::seq::SliceRandom;
+use rand::thread_rng;
 use std::iter::FromIterator;
 use std::collections::BTreeMap;
 use std::collections::BTreeSet;
@@ -149,11 +151,38 @@ pub fn cipher(text: &str) -> String {
     }));
 }
 
+//Question09
+pub fn typoglycemia(text: &str) -> String {
+    return text
+        .split_whitespace()
+        .map(|word| {
+            if word.len() <= 4 {
+                word.to_string()
+            } else {
+                let original = word.chars().collect::<Vec<char>>();
+                let first = original.get(0).unwrap();
+                let last = original.last().unwrap();
+                let mut typo = original[1..original.len() - 1 ]
+                    .iter()
+                    .map(|x| x.clone())
+                    .collect::<Vec<char>>();
+                let mut rng = thread_rng();
+                typo.shuffle(&mut rng);
+                let mut typo = String::from_iter(typo.iter());
+                typo.insert(0, first.clone());
+                typo.push(last.clone());
+                typo
+            }
+        })
+        .collect::<Vec<String>>()
+        .join(" ");
+}
+
 #[cfg(test)]
 mod tests {
     use crate::chapter01::answer::{
         num_00, num_01, mix_string, pi, chemical_symbols, word_ngram, char_ngram, char_ngram_set, union_ngram_set,
-        intersection_ngram_set, difference_ngram_set, generate_sentence, cipher
+        intersection_ngram_set, difference_ngram_set, generate_sentence, cipher, typoglycemia
     };
 
     use std::collections::BTreeMap;
@@ -303,4 +332,47 @@ mod tests {
         assert_eq!(expected, cipher(original));
     }
 
+    //Question09
+    #[test]
+    fn test_09() {
+        let original = "I couldn’t believe that I could actually understand what I was reading : the phenomenal power of the human mind.";
+        let expected = [
+            "I",
+            "couldn’t",
+            "believe",
+            "that",
+            "I",
+            "could",
+            "actually",
+            "understand",
+            "what",
+            "I",
+            "was",
+            "reading",
+            ":",
+            "the",
+            "phenomenal",
+            "power",
+            "of",
+            "the",
+            "human",
+            "mind.",
+        ];
+        let actual = typoglycemia(original);
+        println!("[{}]", actual);
+        let check_tuple = expected.iter().zip(actual.split_whitespace());
+        for (expected, actual) in check_tuple {
+            if expected.len() <= 4 {
+                assert_eq!(*expected, actual);
+            } else {
+                assert_eq!(expected.len(), actual.len());
+                let expected_first = expected.chars().next().unwrap();
+                let expected_last = expected.chars().last().unwrap();
+                let actual_first = actual.chars().next().unwrap();
+                let actual_last = actual.chars().last().unwrap();
+                assert_eq!(expected_first, actual_first);
+                assert_eq!(expected_last, actual_last);
+            }
+        }
+    }
 }
