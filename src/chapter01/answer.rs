@@ -130,10 +130,17 @@ pub fn difference_ngram_set(
         .collect::<BTreeSet<String>>();
 }
 
+//Question07
+pub fn generate_sentence(x: i32, y: &str, z: f32) -> String {
+    return format!("{}時の{}は{:?}", x, y, z)
+}
+
+
 #[cfg(test)]
 mod tests {
     use crate::chapter01::answer::{
-        num_00, num_01, mix_string, pi, chemical_symbols, word_ngram, char_ngram, char_ngram_set, union_ngram_set, intersection_ngram_set, difference_ngram_set
+        num_00, num_01, mix_string, pi, chemical_symbols, word_ngram, char_ngram, char_ngram_set, union_ngram_set,
+        intersection_ngram_set, difference_ngram_set, generate_sentence
     };
 
     use std::collections::BTreeMap;
@@ -263,5 +270,16 @@ mod tests {
         // find "se" from each set
         assert_eq!(true, char_ngram_set(original1, 2).contains("se"));
         assert_eq!(false, char_ngram_set(original2, 2).contains("se"));
+    }
+
+    #[test]
+    fn test_07() {
+        let original_x = 0;
+        let original_y = "y";
+        let original_z = 2.0;
+        assert_eq!(
+            "0時のyは2.0",
+            generate_sentence(original_x, original_y, original_z)
+        );
     }
 }

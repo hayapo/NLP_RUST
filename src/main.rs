@@ -130,10 +130,17 @@ fn main() {
         orig06_2,
         answer::char_ngram_set(orig06_2, 2).contains("se")
     );
-
-     // Chapter 02
-     //println!("-- Chapter01");
-     //println!("---- 01 Mix two string")
+    
+    //Question07
+    let orig07_x = 0;
+    let orig07_y = "y";
+    let orig07_z = 2.0;
+    println!("---- 07 Generate Sentences");
+    println!("x = {}, y = {}, z ={:?}", orig07_x, orig07_y, orig07_z);
+    println!(
+        "{}",
+        answer::generate_sentence(orig07_x, orig07_y, orig07_z)
+    );
 }
 
 fn print_map_to_json(map: BTreeMap<String, usize>) {
