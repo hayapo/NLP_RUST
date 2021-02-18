@@ -135,12 +135,25 @@ pub fn generate_sentence(x: i32, y: &str, z: f32) -> String {
     return format!("{}時の{}は{:?}", x, y, z)
 }
 
+//Question08
+pub fn cipher(text: &str) -> String {
+    return String::from_iter(text.chars().map(|x| {
+        if x.is_ascii_alphanumeric() && x.is_lowercase() {
+            let mut b = [0; 4];
+            x.encode_utf8(&mut b);
+            b[0] = 219 - b[0];
+            char::from(b[0])
+        } else {
+            x
+        }
+    }));
+}
 
 #[cfg(test)]
 mod tests {
     use crate::chapter01::answer::{
         num_00, num_01, mix_string, pi, chemical_symbols, word_ngram, char_ngram, char_ngram_set, union_ngram_set,
-        intersection_ngram_set, difference_ngram_set, generate_sentence
+        intersection_ngram_set, difference_ngram_set, generate_sentence, cipher
     };
 
     use std::collections::BTreeMap;
@@ -282,4 +295,12 @@ mod tests {
             generate_sentence(original_x, original_y, original_z)
         );
     }
+
+    #[test]
+    fn test_08() {
+        let original = "AaBbCc";
+        let expected = "AzByCx";
+        assert_eq!(expected, cipher(original));
+    }
+
 }

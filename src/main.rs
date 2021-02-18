@@ -141,6 +141,15 @@ fn main() {
         "{}",
         answer::generate_sentence(orig07_x, orig07_y, orig07_z)
     );
+
+    //Question08
+    let orig08 = "AaBbCc";
+    let _orig08_ciphered = "AzByCx";
+    println!("---- Cipher");
+    println!(">>>>>暗号化");
+    println!("原文={},暗号文={}", orig08, answer::cipher(orig08));
+    println!(">>>>>復号化");
+    println!("原文={},暗号文={}", _orig08_ciphered, answer::cipher(_orig08_ciphered));
 }
 
 fn print_map_to_json(map: BTreeMap<String, usize>) {
