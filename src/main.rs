@@ -5,6 +5,7 @@ extern crate serde_json;
 extern crate rand;
 
 use nlp_rust::chapter01::answer;
+use nlp_rust::chapter02::answer as answer_02;
 use std::collections::BTreeMap;
 
 fn main() {
@@ -154,7 +155,11 @@ fn main() {
     //Question08
     let original_sentence = "I couldn’t believe that I could actually understand what I was reading : the phenomenal power of the human mind.";
     println!("---- 09 Typoglycemia");
-    println!("{}", answer::typoglycemia(original_sentence))
+    println!("{}", answer::typoglycemia(original_sentence));
+
+    // Chapter 02
+    println!("-- Chapter02");
+    println!("{}", answer_02::word_count("data/popular-names.txt"))
 }
 
 fn print_map_to_json(map: BTreeMap<String, usize>) {

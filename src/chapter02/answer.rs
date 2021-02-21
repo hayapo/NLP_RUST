@@ -1,27 +1,23 @@
-use rand::seq::SliceRandom;
-use rand::thread_rng;
-use std::iter::FromIterator;
-use std::collections::BTreeMap;
-use std::collections::BTreeSet;
-//第2章 UNIXコマンド
+use std::fs::{File};
+use std::io::{BufRead, BufReader};
+
+//第2章 UNIXコマンド- https://nlp100.github.io/ja/ch02.html
 pub fn word_count(file_name: &str) -> usize {
     let f = File::open(file_name).expect("file not found");
     let buf = BufReader::new(f);
     return buf.lines().count();
 }
 
-#cfg[test]
+#[cfg(test)]
 mod tests {
     use crate::chapter02::answer::{
-        count_uniq_words
-    }
-    use std::fs::{create_dir, remove_file, File};
+        word_count
+    };
+    use std::fs::{File};
     use std::io::{BufRead, BufReader, Read};
 
     const INPUT_PATH: &str = "data/popular-names.txt";
-    const EXPECTED_PATH: &str = "data/chap02_expected/";
-    const TMP_PATH: &str = "data/chap02_tmp/";
-    const N: usize = 5;
+    const EXPECTED_PATH: &str = "data/chap02/";
 
     fn read_file_as_string(file_name: &str) -> String {
         let mut f = File::open(file_name).expect(format!("file not found. {}", file_name).as_str());
